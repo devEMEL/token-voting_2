@@ -1,4 +1,5 @@
 {
+  "homepage": "https://devEMEL.github.io/token-voting_2",
   "name": "my-webpack-project",
   "version": "1.0.0",
   "description": "My webpack project",
@@ -10,7 +11,9 @@
     "watch": "webpack --watch",
     "serve": "webpack serve",
     "lint": "eslint . --ext ts",
-    "fix": "eslint . --ext ts --fix"
+    "fix": "eslint . --ext ts --fix",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
   },
   "keywords": [],
   "author": "",
