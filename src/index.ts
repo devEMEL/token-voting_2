@@ -50,7 +50,7 @@ buttonIds.forEach(id => {
 buttons.connect.onclick = async () => {
   await myAlgo.getAccounts()
   myAlgo.accounts.forEach(account => {
-    // accountsMenu.add(new Option(`${account.name} - ${account.address}`, account.address))
+    accountsMenu.add(new Option(`${account.name} - ${account.address}`, account.address))
     console.log(account);
     
   })
