@@ -8,3 +8,5 @@ A simple beaker application that allows voters to vote by holding a specific amo
 - You can clear your vote.
 
 N/B: Uncomment the requirements.txt for usage.
+
+Demo link: https://stellular-dragon-953016.netlify.app/
