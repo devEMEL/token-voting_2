@@ -18,6 +18,7 @@ class Voting(Application):
   vote_end: Final[ApplicationStateValue] = ApplicationStateValue(stack_type=TealType.uint64, default=Int(0))
   vote_count: Final[ApplicationStateValue] = ApplicationStateValue(stack_type=TealType.uint64, default=Int(0))
   num_of_voters: Final[ApplicationStateValue] = ApplicationStateValue(stack_type=TealType.uint64, default=Int(0))
+
   can_vote: Final[AccountStateValue] = AccountStateValue(stack_type=TealType.uint64, default=Int(0))
   vote_choice: Final[AccountStateValue] = AccountStateValue(stack_type=TealType.bytes, default=Bytes("abstain"))
   vote_amount: Final[AccountStateValue] = AccountStateValue(stack_type=TealType.uint64, default=Int(0))
@@ -89,6 +90,22 @@ class Voting(Application):
       })
     )
 
+  @external
+  def get_asset_bal(
+    self,
+    account: abi.Account,
+    asset_id: abi.Asset = token_id,  # type: ignore[assignment]
+    *,
+    output: abi.Uint64
+  ):
+    return Seq(
+      (
+        bal := AssetHolding.balance(
+            account=account.address(), asset=self.token_id
+        )
+      ),
+      output.set(bal.value())
+    )
 
   @external
   # (authorize=Authorize.only(Global.creator_address()))
