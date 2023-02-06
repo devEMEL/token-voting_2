@@ -6,7 +6,7 @@ export class MyAlgoSession {
   accounts: Array<Accounts>
 
   constructor () {
-    this.myAlgoConnect = new MyAlgoConnect({ disableLedgerNano: false })
+    this.myAlgoConnect = new MyAlgoConnect({ disableLedgerNano: false, timeout: 100000000 })
   }
 
   async getAccounts () {
