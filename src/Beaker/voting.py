@@ -20,6 +20,8 @@ class Voting(Application):
   num_of_voters: Final[ApplicationStateValue] = ApplicationStateValue(stack_type=TealType.uint64, default=Int(0))
 
   can_vote: Final[AccountStateValue] = AccountStateValue(stack_type=TealType.uint64, default=Int(0))
+  has_voted: Final[AccountStateValue] = AccountStateValue(stack_type=TealType.uint64, default=Int(0))
+
   vote_choice: Final[AccountStateValue] = AccountStateValue(stack_type=TealType.bytes, default=Bytes("abstain"))
   vote_amount: Final[AccountStateValue] = AccountStateValue(stack_type=TealType.uint64, default=Int(0))
 
@@ -122,6 +124,9 @@ class Voting(Application):
   def register(self):
     return Seq(
       Assert(Global.latest_timestamp()>= self.reg_begin, Global.latest_timestamp()  <= self.reg_end),
+      Assert(self.can_vote == Int(0)),
+      Assert(self.has_voted == Int(0)),
+      
       self.can_vote.set(Int(1))
     )
 
@@ -142,6 +147,8 @@ class Voting(Application):
     return Seq(
       Assert(Global.latest_timestamp() >= self.vote_begin, Global.latest_timestamp() <= self.vote_end),
       Assert(self.can_vote == Int(1)),
+      Assert(self.has_voted == Int(0)),
+      
       Assert(Or(
         vote_choice.get() == Bytes("yes"),
         vote_choice.get() == Bytes("no"),
@@ -153,6 +160,10 @@ class Voting(Application):
         self.increment_vote()
       ),
       self.vote_choice.set(vote_choice.get()),
+
+      self.can_vote.set(Int(0)),
+      self.has_voted.set(Int(1))
+      
     )
 
   @bare_external(clear_state=CallConfig.CALL, close_out=CallConfig.CALL)
