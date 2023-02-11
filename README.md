@@ -9,7 +9,7 @@ A simple beaker application that allows voters to vote by holding a specific amo
 
 N/B: Uncomment the requirements.txt for usage.
 
-Demo link: https://63e10cc34f0ac509665d49b4--stellular-dragon-953016.netlify.app/
+Demo link: https://zingy-pixie-bb6d45.netlify.app/
 
 ### How to vote
 
