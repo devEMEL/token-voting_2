@@ -29,8 +29,6 @@ let ASSETID = 155937703;
   let vote_count = globalState.find((state: { key: string; }) => {
     return state.key === Buffer.from("vote_count", 'utf8').toString('base64')
   })
-  console.log(num_of_voters.value.uint);
-  console.log(vote_count.value.uint);
   document.getElementById("num_of_voters").innerHTML = `${num_of_voters.value.uint}`
   document.getElementById("vote_count").innerHTML = `${vote_count.value.uint}`
   
@@ -51,7 +49,7 @@ buttons.connect.onclick = async () => {
   await myAlgo.getAccounts()
   myAlgo.accounts.forEach(account => {
     accountsMenu.add(new Option(`${account.name} - ${account.address}`, account.address))
-    console.log(account);
+
     
   })
   
@@ -86,7 +84,7 @@ buttons.create_asset.onclick = async () => {
     decimals: BigInt(0)
 
   });
-  console.log(result);
+  
 
   
 }
@@ -107,7 +105,7 @@ buttons.create_registration_and_voting.onclick = async () => {
     vote_end: BigInt(10800)
 
   });
-  console.log(result)
+
 }
 
 buttons.optin_to_app.onclick = async () => {
@@ -119,7 +117,7 @@ buttons.optin_to_app.onclick = async () => {
   });
 
   const result = await votingApp.optIn();
-  console.log(result)
+  
 }
 
 buttons.register.onclick = async () => {
@@ -131,7 +129,7 @@ buttons.register.onclick = async () => {
   });
 
   const result = await votingApp.register();
-  console.log(result)
+  
 }
 
 
@@ -153,7 +151,7 @@ buttons.optin_to_asset.onclick = async () => {
 
 
   const result = await votingApp.optin_asset({opt_txn: opt_txn1});
-  console.log(result)
+  
 }
 
 
@@ -167,7 +165,7 @@ buttons.transfer_asset.onclick = async () => {
   });
 
   const result = await votingApp.transfer_asset({receiver: accountsMenu.selectedOptions[0].value, amount: BigInt(amountInput.valueAsNumber)});
-  console.log(result)
+  
 }
 
 buttons.cast_vote.onclick = async () => {
@@ -179,7 +177,7 @@ buttons.cast_vote.onclick = async () => {
   });
 
   const result = await votingApp.cast_vote({vote_choice: String("yes")});
-  console.log(result)
+  
 }
 
 buttons.clear_vote.onclick = async () => {
@@ -191,7 +189,7 @@ buttons.clear_vote.onclick = async () => {
   });
 
   const result = await votingApp.closeOut();
-  console.log(result)
+  
 }
 
 const getAssetHolding = async (addr: any, asset_id: any) => {
@@ -211,8 +209,7 @@ buttons.asset_holding.onclick = async () => {
     appId: APPID
   });
   const state = await votingApp.getAccountState(accountsMenu.selectedOptions[0].value);
-  // const state = await votingApp.getApplicationState();
-  console.log(state);
+  
 
 
 }
