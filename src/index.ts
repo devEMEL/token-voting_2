@@ -49,7 +49,7 @@ buttons.connect.onclick = async () => {
   await myAlgo.getAccounts()
   myAlgo.accounts.forEach(account => {
     accountsMenu.add(new Option(`${account.name} - ${account.address}`, account.address))
-  
+    localStorage.setItem("userAddr", account.address)
     
   })
   
@@ -174,7 +174,7 @@ buttons.transfer_asset.onclick = async () => {
       appId: APPID
     });
 
-    const result = await votingApp.transfer_asset({receiver: accountsMenu.selectedOptions[0].value, amount: BigInt(amountInput.valueAsNumber)});
+    const result = await votingApp.transfer_asset({receiver: localStorage.getItem("userAddr"), amount: BigInt(amountInput.valueAsNumber)});
   }
 }
 
@@ -188,6 +188,19 @@ buttons.cast_vote_yes.onclick = async () => {
     });
 
     const result = await votingApp.cast_vote({vote_choice: String("yes")});
+  }
+}
+
+buttons.cast_vote_no.onclick = async () => {
+  if(myAlgo.accounts){
+    const votingApp = new Voting({
+      client: algodClient,
+      signer,
+      sender: localStorage.getItem("userAddr"),
+      appId: APPID
+    });
+
+    const result = await votingApp.cast_vote({vote_choice: String("no")});
   }
 }
 
@@ -217,10 +230,10 @@ buttons.clear_vote.onclick = async () => {
   // const votingApp = new Voting({
 //     client: algodClient,
 //     signer,
-//     sender: accountsMenu.selectedOptions[0].value,
+//     sender: localStorage.getItem("userAddr"),
 //     appId: APPID
 //   });
-//   const state = await votingApp.getAccountState(accountsMenu.selectedOptions[0].value);
+//   const state = await votingApp.getAccountState(localStorage.getItem("userAddr"));
 //   // const state = await votingApp.getApplicationState();
 //   console.log(state);
 
