@@ -261,6 +261,9 @@ buttons.clear_vote.onclick = async () => {
     .then(() => {
       swal('You have successfully cleared your vote')
     })
+    .catch(() => {
+      swal("You cant clear your vote yet. Make sure you have voted and its voting period before you can clear your vote")
+    })
   }
 }
 
