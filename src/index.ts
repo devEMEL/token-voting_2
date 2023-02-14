@@ -29,8 +29,6 @@ let ASSETID = 157951645;
   let vote_count = globalState.find((state: { key: string; }) => {
     return state.key === Buffer.from("vote_count", 'utf8').toString('base64')
   })
-  console.log(num_of_voters.value.uint);
-  console.log(vote_count.value.uint);
   document.getElementById("num_of_voters").innerHTML = `${num_of_voters.value.uint}`
   document.getElementById("vote_count").innerHTML = `${vote_count.value.uint}`
   
@@ -51,9 +49,7 @@ buttons.connect.onclick = async () => {
   await myAlgo.getAccounts()
   myAlgo.accounts.forEach(account => {
     accountsMenu.add(new Option(`${account.name} - ${account.address}`, account.address))
-    localStorage.setItem("userAddr", account.address)
-    console.log(localStorage.getItem("userAddr"))
-    console.log(account);
+  
     
   })
   
@@ -89,11 +85,9 @@ buttons.create_asset.onclick = async () => {
       unit_name: String("ENS"),
       total_supply: BigInt(100_000),
       decimals: BigInt(0)
-
     });
-    console.log(result);
-
   }
+  
 }
 
 buttons.create_registration_and_voting.onclick = async () => {
@@ -113,7 +107,6 @@ buttons.create_registration_and_voting.onclick = async () => {
       vote_end: BigInt(10800)
 
     });
-    console.log(result)
   }
 }
 
@@ -127,7 +120,6 @@ buttons.optin_to_app.onclick = async () => {
     });
 
     const result = await votingApp.optIn();
-    console.log(result)
   }
 }
 
@@ -141,8 +133,6 @@ buttons.register.onclick = async () => {
     });
 
     const result = await votingApp.register();
-    console.log(result)
-
   }
 }
 
@@ -169,7 +159,6 @@ buttons.optin_to_asset.onclick = async () => {
 
 
     const result = await votingApp.optin_asset({opt_txn: opt_txn1});
-    console.log(result)
   }
 }
 
@@ -185,8 +174,7 @@ buttons.transfer_asset.onclick = async () => {
       appId: APPID
     });
 
-    const result = await votingApp.transfer_asset({receiver: localStorage.getItem("userAddr"), amount: BigInt(amountInput.valueAsNumber)});
-    console.log(result)
+    const result = await votingApp.transfer_asset({receiver: accountsMenu.selectedOptions[0].value, amount: BigInt(amountInput.valueAsNumber)});
   }
 }
 
@@ -200,21 +188,6 @@ buttons.cast_vote_yes.onclick = async () => {
     });
 
     const result = await votingApp.cast_vote({vote_choice: String("yes")});
-    console.log(result)
-  }
-}
-
-buttons.cast_vote_no.onclick = async () => {
-  if(myAlgo.accounts){
-    const votingApp = new Voting({
-      client: algodClient,
-      signer,
-      sender: localStorage.getItem("userAddr"),
-      appId: APPID
-    });
-
-    const result = await votingApp.cast_vote({vote_choice: String("no")});
-    console.log(result)
   }
 }
 
@@ -228,29 +201,29 @@ buttons.clear_vote.onclick = async () => {
     });
 
     const result = await votingApp.closeOut();
-    console.log(result)
   }
 }
 
-const getAssetHolding = async (addr: any, asset_id: any) => {
-  const accountInfo = await algodClient.accountInformation(addr).do();
-  const asset = accountInfo["assets"].find((asset: { [x: string]: number; } ) => {
-    return asset["asset-id"] === asset_id
-  });
-  return asset;
-}
+// const getAssetHolding = async (addr: any, asset_id: any) => {
+//   const accountInfo = await algodClient.accountInformation(addr).do();
+//   const asset = accountInfo["assets"].find((asset: { [x: string]: number; } ) => {
+//     return asset["asset-id"] === asset_id
+//   });
+//   return asset;
+// }
 
 // buttons.asset_holding.onclick = async () => {
 
-//   const votingApp = new Voting({
+  // const votingApp = new Voting({
 //     client: algodClient,
 //     signer,
-//     sender: localStorage.getItem("userAddr"),
+//     sender: accountsMenu.selectedOptions[0].value,
 //     appId: APPID
 //   });
-//   const state = await votingApp.getAccountState(localStorage.getItem("userAddr"));
+//   const state = await votingApp.getAccountState(accountsMenu.selectedOptions[0].value);
 //   // const state = await votingApp.getApplicationState();
 //   console.log(state);
+
 
 
 // }

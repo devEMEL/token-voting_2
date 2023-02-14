@@ -1,6 +1,6 @@
 {
   "homepage": "https://devEMEL.github.io/token-voting_2",
-  "name": "my-webpack-project",
+  "name": "voting",
   "version": "1.0.0",
   "repository": {
     "url": "git+https://github.com/devEMEL/token-voting_2.git"
