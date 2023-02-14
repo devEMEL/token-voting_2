@@ -1,6 +1,6 @@
 
 import algosdk from "algosdk";
-
+import swal from 'sweetalert';
 import { MyAlgoSession} from './wallets/myalgo'
 import { Voting } from './voting_client';
 
@@ -99,14 +99,17 @@ buttons.create_registration_and_voting.onclick = async () => {
       appId: APPID
     });
 
-    const result = await votingApp.create_registration_and_voting({
+    await votingApp.create_registration_and_voting({
       reg_begin: BigInt(120),
       reg_end: BigInt(600),
 
       vote_begin: BigInt(900),
       vote_end: BigInt(10800)
 
-    });
+    })
+    .then(() => {
+      swal('Registration begins in 2 minutes until 10 minutes. Voting begins in 15 minutes until 3 hours')
+    })
   }
 }
 
@@ -119,7 +122,21 @@ buttons.optin_to_app.onclick = async () => {
       appId: APPID
     });
 
-    const result = await votingApp.optIn();
+    // const result = await votingApp.optIn();
+    // if(result == htt) {
+    //   console.log("You have opted into the contract successfully");
+    // } else {
+    //   console.log("You have opted into the contract successfully");
+    // } 
+    await votingApp.optIn()
+    .then(() => {
+      swal("You have opted into the contract successfully");
+    })
+    .catch(() => {
+      swal("Looks like you have already opted into the contract");
+    })
+    
+    
   }
 }
 
@@ -132,7 +149,13 @@ buttons.register.onclick = async () => {
       appId: APPID
     });
 
-    const result = await votingApp.register();
+    await votingApp.register()
+    .then(() => {
+      swal("You have registered successfully for voting.")
+    })
+    .catch(() => {
+      swal("Make sure its voting period and you have not registered before.")
+    })
   }
 }
 
@@ -158,7 +181,10 @@ buttons.optin_to_asset.onclick = async () => {
     })
 
 
-    const result = await votingApp.optin_asset({opt_txn: opt_txn1});
+    await votingApp.optin_asset({opt_txn: opt_txn1})
+    .then(() => {
+      swal("You have opted into the asset successfully");
+    })
   }
 }
 
@@ -174,7 +200,13 @@ buttons.transfer_asset.onclick = async () => {
       appId: APPID
     });
 
-    const result = await votingApp.transfer_asset({receiver: localStorage.getItem("userAddr"), amount: BigInt(amountInput.valueAsNumber)});
+    await votingApp.transfer_asset({receiver: localStorage.getItem("userAddr"), amount: BigInt(amountInput.valueAsNumber)})
+    .then(() => {
+      swal(`${amountInput.valueAsNumber} ENS has been transferred to your wallet`)
+    })
+    .catch(() => {
+      swal(`There is an error sending faucet to your wallet. Please try again.`)
+    })
   }
 }
 
@@ -187,7 +219,13 @@ buttons.cast_vote_yes.onclick = async () => {
       appId: APPID
     });
 
-    const result = await votingApp.cast_vote({vote_choice: String("yes")});
+    await votingApp.cast_vote({vote_choice: String("yes")})
+    .then(() => {
+      swal('You have voted yes')
+    })
+    .catch(() => {
+      swal("There seems to be a problem with your vote. Make sure you have registered for voting, its voting period and you have up to 1000 ENS")
+    })
   }
 }
 
@@ -200,7 +238,13 @@ buttons.cast_vote_no.onclick = async () => {
       appId: APPID
     });
 
-    const result = await votingApp.cast_vote({vote_choice: String("no")});
+    await votingApp.cast_vote({vote_choice: String("no")})
+    .then(() => {
+      swal('You have voted no')
+    })
+    .catch(() => {
+      swal("There seems to be a problem with your vote. Make sure you have registered for voting, its voting period and you have up to 1000 ENS")
+    })
   }
 }
 
@@ -213,7 +257,10 @@ buttons.clear_vote.onclick = async () => {
       appId: APPID
     });
 
-    const result = await votingApp.closeOut();
+    await votingApp.closeOut()
+    .then(() => {
+      swal('You have successfully cleared your vote')
+    })
   }
 }
 
